@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 struct Inputs {
     public Vector2 axis;
@@ -9,6 +11,7 @@ struct Inputs {
 }
 
 public class CharController : MonoBehaviour {
+    public Text UIcoin;
     public float moveForce = 1400f;
     public float jumpForce = 30f;
     public float gravMult = 9.81f;
@@ -22,6 +25,8 @@ public class CharController : MonoBehaviour {
     private Rigidbody RB3D;
     private Collider col;
     private Animator anim;
+    private string UIcoinBase = "";
+    private byte coins = 0;
     private float sqrt2 = 0;
     private bool grounded = false;
 
@@ -30,9 +35,11 @@ public class CharController : MonoBehaviour {
 		anim = GetComponent<Animator>();
 		RB3D = gameObject.GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
+        UIcoinBase = UIcoin.text;
         sqrt2 = 1f / Mathf.Sqrt(2);         //sqrt is a fairly intensive operation, storing it in memory to avoid using opertaion every fixed update
 
         transform.GetChild(1).transform.Rotate(0f, 0f, rotateArmature);
+        UIcoin.text = UIcoinBase + coins;
     }
 
 	// Update is called once per frame
@@ -84,6 +91,20 @@ public class CharController : MonoBehaviour {
             RB3D.AddForce(Physics.gravity * gravMult, ForceMode.Acceleration);
 
         curInputs.framesPassed = 0;
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (!other.CompareTag("Coin"))
+            return;
+
+        ++coins;
+        UIcoin.text = UIcoinBase + coins;
+
+        if (coins >= 10) {
+            SceneManager.LoadScene("End");
+        }
+
+        Destroy(other.gameObject);
     }
 
     bool isGrounded() {

@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour {
         float calcDist = distance;
         //Vector3 calVec = new Vector3(calc2, calc1, calc3);
         //Vector3 cenOfst = new Vector3(0.1f, 0.1f, 0.1f);
-        int layer = ~(1 << LayerMask.NameToLayer("Player"));
+        int layer = ~(1 << LayerMask.NameToLayer("Player") << LayerMask.NameToLayer("Ignore Raycast"));
         RaycastHit ray;
 
         //Do some raycasts with orginOffsetWithRotation as direction
