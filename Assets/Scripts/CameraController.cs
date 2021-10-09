@@ -47,6 +47,8 @@ public class CameraController : MonoBehaviour {
         int layer = ~(1 << LayerMask.NameToLayer("Player"));
         RaycastHit ray;
 
+        //Do some raycasts with orginOffsetWithRotation as direction
+
         Vector3 orginOfAll = following.position + orginOffset + transform.rotation * orginOffsetWithRotation;
 
         //follow.pos + orgOfst + Vec(0.1 * Pos/Neg(orgOfst.x), 0.1 * Pos/Neg(orgOfst.y), 0)     Pos/Neg() uses bitwise to find signed (but probs not cuz float)
